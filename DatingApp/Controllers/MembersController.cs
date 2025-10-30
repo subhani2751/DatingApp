@@ -15,7 +15,7 @@ namespace DatingApp.Controllers
             var member = await Context.users.ToListAsync();
             return member;
         }
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id}")]
         public async Task<ActionResult<AppUser>> GetMembers(string id)
         {
