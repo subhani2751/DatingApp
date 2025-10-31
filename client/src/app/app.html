@@ -1,5 +1,12 @@
 
 <app-nav/>
-<app-home  />
+<div 
+    [class.mt-24]="router.url!=='/'"
+    [class.containar]="router.url!=='/'"
+    [class.mx-auto]="router.url!=='/'">
+    <router-outlet/>
+</div>
+
+
 <!-- <app-home [membersFromapp]="Members()" /> -->
 

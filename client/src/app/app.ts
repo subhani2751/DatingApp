@@ -1,19 +1,20 @@
 import { AccountService } from './../Core/services/account-service';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, Inject, inject, OnInit, signal } from '@angular/core';
 import { Nav } from "../Layout/nav/nav";
 import { lastValueFrom } from 'rxjs';
-import { Home } from "../Features/home/home";
 import { User } from '../Types/User';
+import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [Nav, Home],
+  imports: [Nav,  RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App implements OnInit{
   private accountService=inject(AccountService);
+  protected router=inject(Router);
   private http =inject(HttpClient);
   protected readonly title = 'Dating App';
   protected Members = signal<User[]>([])
