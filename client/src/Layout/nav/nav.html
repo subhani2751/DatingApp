@@ -14,45 +14,60 @@
         <a>Messages</a>
     </nav>
     <div class="flex align-middle ml-auto gap-3">
-        <form #loginForm="ngForm" (ngSubmit)="login()" class="flex items-center gap-3">
+      @if (accountService.currentUser(); as user) {
+            <div class="dropdown dropdown-end">
+              <div tabindex="0" role="button" class="flex items-center text-white text-xl gap-3 cursor-pointer">
+                <img src="/user.png" alt="user avatar" class="w-8 h-8 rounded-full">
+                <span>{{user.sDisplayName}}</span>
+              </div>
+              <ul tabindex="-1" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                <li><a>Edit Profile</a></li>
+                <li><a (click)="logout()">LogOut</a></li>
+              </ul>
+            </div>
+      }@else {
+          <form #loginForm="ngForm" (ngSubmit)="login()" class="flex items-center gap-3">
             <input [(ngModel)]="Creds.sEmail" name="sEmail" type="text" class="input" placeholder="Email">
-            <input [(ngModel)]="Creds.sPassword" name="sPassword" [type]="showPassword ? 'text': 'password'" class="input" placeholder="password">
-   <!--  <button
-      type="button"
-      class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
-      (click)="showPassword = !showPassword"
-      tabindex="-1"
-    >
-      <svg *ngIf="!showPassword"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-5 h-5"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-      </svg>
-
-      <svg *ngIf="showPassword"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="w-5 h-5"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M3.98 8.223A10.477 10.477 0 002.458 12c1.274 4.057 5.064 7 9.542 7a9.985 9.985 0 004.244-.937m2.962-1.816A10.45 10.45 0 0021.542 12 10.477 10.477 0 0012 5a9.985 9.985 0 00-4.244.937M3 3l18 18" />
-      </svg>
-    </button> -->
-            
-            <button type="submit" class="btn" >Login</button>
-        </form>
+            <input [(ngModel)]="Creds.sPassword" name="sPassword" [type]="showPassword ? 'password': 'text'" class="input"
+              placeholder="password">
+            <!--  <button
+                type="button"
+                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500"
+                (click)="showPassword = !showPassword"
+                tabindex="-1"
+              >
+                <svg *ngIf="!showPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-5 h-5"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+          
+                <svg *ngIf="showPassword"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="w-5 h-5"
+                >
+                  <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M3.98 8.223A10.477 10.477 0 002.458 12c1.274 4.057 5.064 7 9.542 7a9.985 9.985 0 004.244-.937m2.962-1.816A10.45 10.45 0 0021.542 12 10.477 10.477 0 0012 5a9.985 9.985 0 00-4.244.937M3 3l18 18" />
+                </svg>
+              </button> -->
+            <button type="submit" class="btn">Login</button>
+          </form>
+      }
+       
     </div>
+    
 
 </div>
 </header>
