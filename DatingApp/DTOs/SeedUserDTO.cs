@@ -9,7 +9,7 @@ namespace DatingApp.DTOs
         [Key]
         public required string sID { get; set; }
         public required string sEmail { get; set; }
-        public DateOnly DateofBirth { get; set; }
+        public DateOnly DateOfBirth { get; set; }
         public string? sImageUrl { get; set; }
         public required string sDisplayName { get; set; }
         public DateTime Created { get; set; } 

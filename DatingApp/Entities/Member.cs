@@ -8,7 +8,7 @@ namespace DatingApp.Entities
     {
         [Key]
         public string sID { get; set; } = null!;
-        public DateOnly DateofBirth { get; set; }
+        public DateOnly DateOfBirth { get; set; }
         public string? sImageUrl { get; set; }
         public required string sDisplayName { get; set; }
         public DateTime Created { get; set; } = DateTime.UtcNow;

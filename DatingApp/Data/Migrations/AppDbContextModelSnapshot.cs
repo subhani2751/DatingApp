@@ -4,19 +4,16 @@ using DatingApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DatingApp.Data.Mingrations
+namespace DatingApp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251102073228_MemberEntityAdded")]
-    partial class MemberEntityAdded
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,11 +59,11 @@ namespace DatingApp.Data.Mingrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
                     b.Property<DateTime>("LastActive")
                         .HasColumnType("datetime2");
-
-                    b.Property<DateOnly>("MyProperty")
-                        .HasColumnType("date");
 
                     b.Property<string>("sCity")
                         .IsRequired()
@@ -103,11 +100,11 @@ namespace DatingApp.Data.Mingrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("sId"));
 
-                    b.Property<string>("MembersID")
+                    b.Property<string>("memberId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("sPublicId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("sUrl")
@@ -116,7 +113,7 @@ namespace DatingApp.Data.Mingrations
 
                     b.HasKey("sId");
 
-                    b.HasIndex("MembersID");
+                    b.HasIndex("memberId");
 
                     b.ToTable("Photos");
                 });
@@ -135,8 +132,10 @@ namespace DatingApp.Data.Mingrations
             modelBuilder.Entity("DatingApp.Entities.Photo", b =>
                 {
                     b.HasOne("DatingApp.Entities.Member", "Member")
-                        .WithMany()
-                        .HasForeignKey("MembersID");
+                        .WithMany("Photos")
+                        .HasForeignKey("memberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Member");
                 });
@@ -145,6 +144,11 @@ namespace DatingApp.Data.Mingrations
                 {
                     b.Navigation("Member")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("DatingApp.Entities.Member", b =>
+                {
+                    b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618
         }

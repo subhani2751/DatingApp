@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace DatingApp.Data.Mingrations
+namespace DatingApp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251102082642_PhotoEntityUpdated")]
-    partial class PhotoEntityUpdated
+    [Migration("20251103120042_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,7 +62,7 @@ namespace DatingApp.Data.Mingrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateOnly>("DateofBirth")
+                    b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date");
 
                     b.Property<DateTime>("LastActive")

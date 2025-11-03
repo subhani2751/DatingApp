@@ -34,7 +34,7 @@ namespace DatingApp.Data
                     Member = new Member
                     {
                         sID = member.sID,
-                        DateofBirth = member.DateofBirth,
+                        DateOfBirth = member.DateOfBirth,
                         sDisplayName = member.sDisplayName,
                         sGender = member.sGender,
                         sCity = member.sCity,

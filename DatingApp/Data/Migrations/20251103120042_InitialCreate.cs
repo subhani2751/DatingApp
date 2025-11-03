@@ -3,26 +3,36 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DatingApp.Data.Mingrations
+namespace DatingApp.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class MemberEntityAdded : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "sImageUrl",
-                table: "users",
-                type: "nvarchar(max)",
-                nullable: true);
+            migrationBuilder.CreateTable(
+                name: "users",
+                columns: table => new
+                {
+                    sID = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    sDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    sEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    sImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PasswordHash = table.Column<byte[]>(type: "varbinary(max)", nullable: false),
+                    Passwordsalt = table.Column<byte[]>(type: "varbinary(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_users", x => x.sID);
+                });
 
             migrationBuilder.CreateTable(
                 name: "Members",
                 columns: table => new
                 {
                     sID = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MyProperty = table.Column<DateOnly>(type: "date", nullable: false),
+                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     sImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     sDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -50,24 +60,24 @@ namespace DatingApp.Data.Mingrations
                     sId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     sUrl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    sPublicId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    MembersID = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    sPublicId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    memberId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Photos", x => x.sId);
                     table.ForeignKey(
-                        name: "FK_Photos_Members_MembersID",
-                        column: x => x.MembersID,
+                        name: "FK_Photos_Members_memberId",
+                        column: x => x.memberId,
                         principalTable: "Members",
                         principalColumn: "sID",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Photos_MembersID",
+                name: "IX_Photos_memberId",
                 table: "Photos",
-                column: "MembersID");
+                column: "memberId");
         }
 
         /// <inheritdoc />
@@ -79,9 +89,8 @@ namespace DatingApp.Data.Mingrations
             migrationBuilder.DropTable(
                 name: "Members");
 
-            migrationBuilder.DropColumn(
-                name: "sImageUrl",
-                table: "users");
+            migrationBuilder.DropTable(
+                name: "users");
         }
     }
 }

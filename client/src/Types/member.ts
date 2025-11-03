@@ -1,6 +1,6 @@
 export type Member = {
   sID: string
-  dateofBirth: string
+  dateOfBirth: string
   sImageUrl?: string
   sDisplayName: string
   created: string
