@@ -13,6 +13,7 @@ namespace DatingApp.Extentions
                 sId = user.sID,
                 sDisplayName = user.sDisplayName,
                 sEmail = user.sEmail,
+                sImageUrl = user.sImageUrl,
                 sToken = tokenService.CreateToken(user)
             };
         }

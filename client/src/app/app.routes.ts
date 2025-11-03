@@ -5,6 +5,9 @@ import { MemberDetailed } from '../Features/Members/member-detailed/member-detai
 import { Lists } from '../Features/lists/lists';
 import { Messages } from '../Features/messages/messages';
 import { authGuard } from '../Core/guards/auth-guard';
+import { TestErrors } from '../Features/test-errors/test-errors';
+import { NotFound } from '../Shared/errors/not-found/not-found';
+import { ServerError } from '../Shared/errors/server-error/server-error';
 
 export const routes: Routes = [
     {path:'', component: Home},
@@ -13,11 +16,13 @@ export const routes: Routes = [
         runGuardsAndResolvers:'always',
         canActivate: [authGuard],
         children:[
-                {path:'Members', component: MemberList, canActivate: [authGuard] },
+                {path:'Members', component: MemberList },
                 {path:'Members/:id', component: MemberDetailed},
                 {path:'lists', component: Lists},
                 {path:'messages', component: Messages},
         ]
     },
-    {path:'**', component: Home},
+    {path:'errors', component: TestErrors},
+    {path:'server-error', component: ServerError},
+    {path:'**', component: NotFound},
 ];
