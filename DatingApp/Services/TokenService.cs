@@ -17,7 +17,8 @@ namespace DatingApp.Services
             var claims = new List<Claim>
             {
                new(ClaimTypes.Email,user.sEmail),
-               new(ClaimTypes.NameIdentifier,user.sDisplayName)
+               new(ClaimTypes.NameIdentifier,user.sDisplayName),
+               new("sId",user.sID)
                //new(ClaimTypes.Email,user.sEmail),
                //new("customevalue","cutome also possible"),
             };

@@ -7,13 +7,14 @@ import { InitService } from '../Core/services/init-service';
 import { lastValueFrom } from 'rxjs';
 import { errorInterceptor } from '../Core/interceptor/error-interceptor';
 import { jwtInterceptor } from '../Core/interceptor/jwt-interceptor';
+import { loadingInterceptor } from '../Core/interceptor/loading-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes,withViewTransitions()),
-    provideHttpClient(withInterceptors([errorInterceptor,jwtInterceptor])),
+    provideHttpClient(withInterceptors([errorInterceptor,jwtInterceptor,loadingInterceptor])),
     provideAppInitializer(async()=>{
       const initserviec=inject(InitService)
 

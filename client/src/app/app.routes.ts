@@ -12,6 +12,7 @@ import { MemberProfile } from '../Features/Members/member-profile/member-profile
 import { MemberPhotos } from '../Features/Members/member-photos/member-photos';
 import { MemberMessages } from '../Features/Members/member-messages/member-messages';
 import { memberResolver } from '../Features/Members/member-resolver';
+import { preventUnsavedChnagesGuard } from '../Core/guards/prevent-unsaved-chnages-guard';
 
 export const routes: Routes = [
     {path:'', component: Home},
@@ -28,7 +29,7 @@ export const routes: Routes = [
                     component: MemberDetailed,
                     children:[
                         {path:'',redirectTo: 'profile', pathMatch: 'full' },
-                        {path:'profile',component: MemberProfile, title: 'Profile' },
+                        {path:'profile',component: MemberProfile, title: 'Profile' , canDeactivate: [preventUnsavedChnagesGuard]},
                         {path:'photos',component: MemberPhotos, title: 'Photos' },
                         {path:'messages',component: MemberMessages, title: 'Messages' },
                     ]

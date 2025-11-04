@@ -10,6 +10,11 @@ namespace DatingApp.Data
         {
             return await Context.Members.FindAsync(id);
         }
+        public async Task<Member?> GetMemberForUpdateAsync(string id)
+        {
+            return await Context.Members.Include(a => a.user).FirstOrDefaultAsync(x => x.sID == id);
+
+        }
 
         public async Task<IReadOnlyList<Member>> GetMembersAsync()
         {
@@ -28,7 +33,7 @@ namespace DatingApp.Data
             return await Context.SaveChangesAsync() > 0;
         }
 
-        public async void Update(Member member)
+        public void Update(Member member)
         {
             Context.Entry(member).State = EntityState.Modified;
         }
