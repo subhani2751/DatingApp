@@ -24,7 +24,14 @@
             </div>
         </div>
         <div class="card bg-base-100 w-3/4 gap-[0%] p-[1.5%]">
-            <h3 class="card-title text-3xl text-primary">{{title()}}</h3>
+            <div class="flex justify-between items-center">
+                <h3 class="card-title text-3xl text-primary">{{title()}}</h3>
+                @if(isCurrentUser()){
+                    <button class="btn btn-outline btn-primary" (click)="memberService.editmode.set(!memberService.editmode())">
+                        {{memberService.editmode() ? 'Cancel' : 'Edit'}}
+                    </button>
+                }
+            </div>
             <div class="divider gap-[0%]"></div>
             <div>
                 <router-outlet/>

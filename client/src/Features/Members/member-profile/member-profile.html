@@ -9,6 +9,12 @@
             <span>{{member.lastActive | date: 'dd MMM yyyy h:mm a'}}</span>
         </div>
         <h3 class="text-lg font-semibold text-primary">About {{member.sDisplayName}}</h3>
-        <div>{{member.sDescription}}</div>
+        @if(memberService.editmode()){
+            <div>
+                profile goes here
+            </div>
+        }@else {
+            <div>{{member.sDescription}}</div>
+        }
     </div>
 }
