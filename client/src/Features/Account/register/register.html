@@ -2,31 +2,10 @@
     <div class="card-title justify-center text-3xl text-primary">Sign up</div>
     <div class="card-body w-full">
         <form [formGroup]="registerForm" class="flex flex-col gap-4 w-full" (ngSubmit)="register()">
-            <label class="floating-label">
-                <span>Email</span>
-                <input name="sEmail" class="input w-full" formControlName="sEmail" placeholder="Email">
-            </label>
-            <label class="floating-label text-left">
-                <span>Display Name</span>
-                <input name="sDisplayName" 
-                       class="input w-full"
-                       [class.input-error]="registerForm.controls['sDisplayName'].invalid
-                                            && registerForm.controls['sDisplayName'].touched"
-                       formControlName="sDisplayName" 
-                       placeholder="Display Name">
-                @if(registerForm.controls['sDisplayName'].invalid && registerForm.controls['sDisplayName'].touched){
-                    <div class="validation-hint text-error text-xs">Display Name is required</div>
-                }
-            </label>
-            <label class="floating-label">
-                <span>Password</span>
-                <input type="password" name="sPassword" class="input w-full" formControlName="sPassword" placeholder="Password">
-            </label>
-            <label class="floating-label">
-                <span>Confirm Password</span>
-                <input type="password" name="sConfirmPassword" class="input w-full" formControlName="sConfirmPassword" placeholder="Confirm Password">
-            </label>
-            
+            <app-text-input label="Email" formControlName="sEmail"/>
+            <app-text-input label="Display Name" formControlName="sDisplayName"/>
+            <app-text-input label="Password" formControlName="sPassword" type="password"/>
+             <app-text-input label="Confirm Password" formControlName="sConfirmPassword" type="password"/>
             <!-- <select class="select w-full">
                 <option disabled selected>Pick a member</option>
                @for (member of membersFromhome(); track $index) {

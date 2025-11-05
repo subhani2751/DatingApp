@@ -1,38 +1,36 @@
 import { AccountService } from './../../../Core/services/account-service';
-import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Component, inject, input, OnInit, output } from '@angular/core';
 import { RegisterCreds, User } from '../../../Types/User';
 import { JsonPipe } from '@angular/common';
+import { TextInput } from "../../../Shared/text-input/text-input";
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, JsonPipe],
+  imports: [ReactiveFormsModule, JsonPipe, TextInput],
   templateUrl: './register.html',
   styleUrl: './register.css'
 })
-export class Register implements OnInit {
+export class Register {
 
   // membersFromhome=input.required<User[]>();
   private accountService = inject(AccountService);
+  private fb =inject(FormBuilder)
   CancelRegister = output<boolean>();
   protected creds = {} as RegisterCreds;
-  protected registerForm: FormGroup = new FormGroup({})
+  protected registerForm: FormGroup;
 
-  ngOnInit(): void {
-    this.initializeForm();
-  }
-
-  initializeForm() {
-    this.registerForm = new FormGroup({
-      sEmail: new FormControl('subhani@test.com', [Validators.required, Validators.email]),
-      sDisplayName: new FormControl('', Validators.required),
-      sPassword: new FormControl('', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]),
-      sConfirmPassword: new FormControl('', [Validators.required,this.matchValues('sPassword')])
+constructor(){
+  this.registerForm = this.fb.group({
+      sEmail: ['', [Validators.required, Validators.email]],
+      sDisplayName: ['', Validators.required],
+      sPassword: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(8)]],
+      sConfirmPassword: ['', [Validators.required,this.matchValues('sPassword')]]
     });
     this.registerForm.controls['sPassword'].valueChanges.subscribe(()=>{
       this.registerForm.controls['sConfirmPassword'].updateValueAndValidity();
     })
-  }
+}
 
   matchValues(matchTo: string):ValidatorFn {
 
