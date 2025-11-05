@@ -1,12 +1,31 @@
-@if(photos$ | async; as photos ){
-    @if(photos.length>0){
-        <div class="grid grid-cols-4 auto-rows-min gap-3 p-5 h-[65vh] overflow-auto">
-            @for (photo of photos; track photo.sId) {
-                <img src="{{photo.sUrl}}" alt="photo of member" class="w-full rounded-lg">
-            }
-             @for (photo of photoMocks; track $index) {
-                <img src="{{photo.sUrl}}" alt="photo of member" class="w-full rounded-lg">
-            }
-        </div>
+@if(!memberService.editmode()){
+    @if(photos(); as photos ){
+        @if(photos.length>0){
+            <div class="grid grid-cols-4 auto-rows-min gap-3 p-5 h-[65vh] overflow-auto">
+                @for (photo of photos; track photo.sId) {
+                    <div class="relative">
+                    <img src="{{photo.sUrl}}" alt="photo of member" class="w-full rounded-lg">
+                        @if(acountService.currentUser()?.sId === memberService.member()?.sID){
+                            <app-star-button 
+                            [disabled]="photo.sUrl === memberService.member()?.sImageUrl"
+                            [selected]="photo.sUrl === memberService.member()?.sImageUrl"
+                            (clickEvent)="setMainPhoto(photo)"
+                            class="absolute top-1 right-1 "
+                            />
+                            <app-delete-button 
+                            [disabled]="photo.sUrl === memberService.member()?.sImageUrl"
+                            (clickEvent)="deletePhoto(photo.sId)"
+                            class="absolute top-1 left-1"
+                            />
+                        }
+                    </div>
+                }
+            </div>
+        }@else {
+            <p class="text-center text-gray-500"> No photos available</p>
+        }
     }
+}@else {
+    <app-image-upload (uploadFile)="onUploadImage($event)" [loading]="loading()"/>
 }
+

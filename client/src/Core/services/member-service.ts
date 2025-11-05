@@ -32,4 +32,18 @@ export class MemberService {
   updateMember(member: EditableMember) {
     return this.http.put(this.baseUrl + 'members/UpdateMember', member)
   }
+
+  uploadphoto(file: File) {
+    const formdate = new FormData();
+    formdate.append('file', file);
+    return this.http.post<Photo>(this.baseUrl + 'members/add-photo', formdate)
+  }
+
+  setMainPhoto(photo: Photo) {
+    return this.http.put(this.baseUrl + 'members/set-main-photo/' + photo.sId, {});
+  }
+
+  deletePhoto(photoId: number){
+    return this.http.delete(this.baseUrl + 'members/delete-photo/' + photoId )
+  }
 }
