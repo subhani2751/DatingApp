@@ -22,7 +22,15 @@ namespace DatingApp.Controllers
                 sEmail = registerDTO.sEmail,
                 sDisplayName = registerDTO.sDisplayname,
                 PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(registerDTO.sPassword)),
-                Passwordsalt = hmac.Key
+                Passwordsalt = hmac.Key,
+                Member = new Member
+                {
+                    sDisplayName= registerDTO.sDisplayname,
+                    sGender = registerDTO.sGender,
+                    sCity = registerDTO.sCity,
+                    sCountry = registerDTO.sCountry,
+                    DateOfBirth = registerDTO.DateOfBirth
+                }
             };
             context.users.Add(user);
             await context.SaveChangesAsync();

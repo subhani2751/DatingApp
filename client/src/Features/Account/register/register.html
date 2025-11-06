@@ -1,26 +1,63 @@
 <div class="card bg-base-200 w-1/2 mx-auto flex flex-col p-6 rounded-lg shadow-lg">
     <div class="card-title justify-center text-3xl text-primary">Sign up</div>
     <div class="card-body w-full">
-        <form [formGroup]="registerForm" class="flex flex-col gap-4 w-full" (ngSubmit)="register()">
-            <app-text-input label="Email" formControlName="sEmail"/>
-            <app-text-input label="Display Name" formControlName="sDisplayName"/>
-            <app-text-input label="Password" formControlName="sPassword" type="password"/>
-             <app-text-input label="Confirm Password" formControlName="sConfirmPassword" type="password"/>
-            <!-- <select class="select w-full">
-                <option disabled selected>Pick a member</option>
-               @for (member of membersFromhome(); track $index) {
-                <option value="{{member.sId}}">{{member.sDisplayName}}</option>
-               }
-            </select> -->
-
-            <div class="flex items-center justify-end gap-3">
-             <button (click)="cancel()" type="button" class="btn">Cancel</button>
-             <button class="btn btn-primary" [disabled]="!registerForm.valid" type="submit">Register</button>
-            </div>
-        </form>
+        <ul class="steps">
+            <li class="step step-primary">Credentials</li>
+             <li class="step" [class.step-primary]="currentStep() === 2">Profile</li>
+        </ul>   
+        @if(currentStep() === 1){
+            <form [formGroup]="credentialsForm" class="flex flex-col gap-6 w-full steps" >
+                <app-text-input label="Email" class="mt-4" formControlName="sEmail" />
+                <app-text-input label="Display Name" formControlName="sDisplayName" />
+                <app-text-input label="Password" formControlName="sPassword" type="password" />
+                <app-text-input label="Confirm Password" formControlName="sConfirmPassword" type="password" />
+                <!-- <select class="select w-full">
+                            <option disabled selected>Pick a member</option>
+                        @for (member of membersFromhome(); track $index) {
+                            <option value="{{member.sId}}">{{member.sDisplayName}}</option>
+                        }
+                        </select> -->
+            
+                <div class="flex items-center justify-end gap-3">
+                    <button (click)="cancel()" type="button" class="btn">Cancel</button>
+                    <button class="btn btn-primary" [disabled]="!credentialsForm.valid" type="button"
+                        (click)="nextStep()">Next</button>
+                </div>
+            </form>
+        }
+        @else if(currentStep() === 2 )
+        {
+            <form [formGroup]="profileForm" class="flex flex-col w-full gap-6 steps">
+                <div class="flex items-center gap-4">
+                    <div class="font-semibold">Gender: </div>
+                    <label class="flex gap-3 items-center">
+                        <span>Male</span>
+                        <input type="radio" formControlName="sGender" value="male" class="radio radio-primary">
+                    </label>
+                     <label class="flex gap-3 items-center">
+                        <span>Female</span>
+                        <input type="radio" formControlName="sGender" value="female" class="radio radio-primary">
+                    </label>
+                </div>
+                <app-text-input [maxDate]="getMaxDate()" type="Date" label="Date Of Birth"  formControlName="DateOfBirth" />
+                <app-text-input label="City"  formControlName="sCity" />
+                <app-text-input label="Country"  formControlName="sCountry" />
+                 <div class="flex items-center justify-end gap-3">
+                    <button (click)="prevStep()" type="button" class="btn">Back</button>
+                    <button class="btn btn-primary" [disabled]="!profileForm.valid" type="button"
+                        (click)="register()">Register</button>
+                </div>
+            </form>
+        }
+        
     </div>
-    <div class="flex flex-col items-start px-3 w-full mockup-code text-lg ">
-        <div>Form Values: {{registerForm.value | json}}</div>
-        <div>Form Status: {{registerForm.status | json}}</div>
-    </div>
+    @if(ValidationErrors().length > 0){
+        <div class="mt-5 flex bg-gray-200 rounded-2xl w-1/2 p-3 mx-auto">
+            <ul class="flex flex-col text-error space-y-1">
+                @for (error of ValidationErrors(); track $index) {
+                    <li>{{error}}</li>
+                }
+            </ul>
+        </div>
+    }
 </div>

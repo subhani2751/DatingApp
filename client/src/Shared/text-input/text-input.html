@@ -1,7 +1,8 @@
-<label class="floating-label text-left">
-    <span>{{label()}}</span>
+<label class="floating-label text-left ">
+    <span class="text-xl">{{label()}}</span>
     <input class="input w-full" 
         [type]="type()"
+        [max]="maxDate()"
         [class.input-error]="control.invalid && control.touched"
         [class.input-success]="control.valid && control.touched"
         [formControl]="control" [placeholder]="label()">
