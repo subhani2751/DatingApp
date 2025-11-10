@@ -13,32 +13,35 @@ import { MemberPhotos } from '../Features/Members/member-photos/member-photos';
 import { MemberMessages } from '../Features/Members/member-messages/member-messages';
 import { memberResolver } from '../Features/Members/member-resolver';
 import { preventUnsavedChnagesGuard } from '../Core/guards/prevent-unsaved-chnages-guard';
+import { Admin } from '../Features/admin/admin';
+import { adminGuard } from '../Core/guards/admin-guard';
 
 export const routes: Routes = [
-    {path:'', component: Home},
+    { path: '', component: Home },
     {
-        path:"",
-        runGuardsAndResolvers:'always',
+        path: "",
+        runGuardsAndResolvers: 'always',
         canActivate: [authGuard],
-        children:[
-                {path:'Members', component: MemberList },
-                {
-                    path:'Members/:id', 
-                    resolve: {member: memberResolver},
-                    runGuardsAndResolvers : 'always',
-                    component: MemberDetailed,
-                    children:[
-                        {path:'',redirectTo: 'profile', pathMatch: 'full' },
-                        {path:'profile',component: MemberProfile, title: 'Profile' , canDeactivate: [preventUnsavedChnagesGuard]},
-                        {path:'photos',component: MemberPhotos, title: 'Photos' },
-                        {path:'messages',component: MemberMessages, title: 'Messages' },
-                    ]
-                },
-                {path:'lists', component: Lists},
-                {path:'messages', component: Messages},
+        children: [
+            { path: 'Members', component: MemberList },
+            {
+                path: 'Members/:id',
+                resolve: { member: memberResolver },
+                runGuardsAndResolvers: 'always',
+                component: MemberDetailed,
+                children: [
+                    { path: '', redirectTo: 'profile', pathMatch: 'full' },
+                    { path: 'profile', component: MemberProfile, title: 'Profile', canDeactivate: [preventUnsavedChnagesGuard] },
+                    { path: 'photos', component: MemberPhotos, title: 'Photos' },
+                    { path: 'messages', component: MemberMessages, title: 'Messages' },
+                ]
+            },
+            { path: 'lists', component: Lists },
+            { path: 'messages', component: Messages },
+            { path: 'admin', component: Admin, canActivate: [adminGuard] },
         ]
     },
-    {path:'errors', component: TestErrors},
-    {path:'server-error', component: ServerError},
-    {path:'**', component: NotFound},
+    { path: 'errors', component: TestErrors },
+    { path: 'server-error', component: ServerError },
+    { path: '**', component: NotFound },
 ];

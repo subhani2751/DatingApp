@@ -4,12 +4,14 @@ using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace DatingApp.Services
 {
-    public class TokenService(IConfiguration config) : ITokenService
+    public class TokenService(IConfiguration config, UserManager<AppUser> userManager) : ITokenService
     {
-        public string CreateToken(AppUser user)
+        public async Task<string> CreateToken(AppUser user)
         {
             var tokenKey = config["TokenKey"] ?? throw new Exception("Token Key is missing");
             if (tokenKey.Length < 64) throw new Exception("Token Key must be at least 64 characters long");
@@ -22,6 +24,8 @@ namespace DatingApp.Services
                //new(ClaimTypes.Email,user.sEmail),
                //new("customevalue","cutome also possible"),
             };
+            var roles= await userManager.GetRolesAsync(user);
+            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
             var TokenDescriptor = new SecurityTokenDescriptor
             {

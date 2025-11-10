@@ -4,14 +4,15 @@ using System.Text.Json;
 using System.Security.Cryptography;
 using DatingApp.Entities;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 namespace DatingApp.Data
 {
     public class Seed
     {
-        public static async Task SeedUsers(AppDbContext context)
+        public static async Task SeedUsers(UserManager<AppUser> userManager)
         {
-            if (await context.users.AnyAsync()) return;
+            if (await userManager.Users.AnyAsync()) return;
             var userData = await File.ReadAllTextAsync("Data/UserSeedData.json");
             //var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             var members = JsonSerializer.Deserialize<List<SeedUserDTO>>(userData);
@@ -22,15 +23,18 @@ namespace DatingApp.Data
             }
             foreach (var member in members)
             {
-                using var hmac = new HMACSHA512();
+                //using var hmac = new HMACSHA512();
                 var user = new AppUser
                 {
                     sID = member.sID,
+                    Id= member.sID,
                     sDisplayName = member.sDisplayName,
                     sEmail = member.sEmail,
+                    Email = member.sEmail,
                     sImageUrl = member.sImageUrl,
-                    PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Pa$$w0rd")),
-                    Passwordsalt = hmac.Key,
+                    UserName = member.sEmail,
+                    //PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes("Pa$$w0rd")),
+                    //Passwordsalt = hmac.Key,
                     Member = new Member
                     {
                         sID = member.sID,
@@ -47,12 +51,26 @@ namespace DatingApp.Data
                 };
                 user.Member.Photos.Add(new Photo
                 {
-                    sUrl = member.sImageUrl!, 
+                    sUrl = member.sImageUrl!,
                     memberId = member.sID
                 });
-                context.users.Add(user);
+                var result = await userManager.CreateAsync(user, "Pa$$w0rd");
+                if (!result.Succeeded)
+                {
+                    Console.WriteLine(result.Errors.First().Description);
+                }
+                await userManager.AddToRoleAsync(user, "Member");
             }
-            await context.SaveChangesAsync();
+            var admin = new AppUser
+            {
+                UserName = "admin@test.com",
+                sEmail = "admin@test.com",
+                Email = "admin@test.com",
+                sDisplayName = "Admin",
+            };
+            await userManager.CreateAsync(admin, "Pa$$w0rd");
+            await userManager.AddToRolesAsync(admin, ["Admin", "Moderator"]);
+
         }
     }
 }

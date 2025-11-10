@@ -1,15 +1,16 @@
-export type User={
+export type User = {
     sId: string;
     sDisplayName: string;
     sEmail: string;
     sToken: string;
     sImageUrl?: string;
+    roles: string[];
 }
-export type LoginCreds={
+export type LoginCreds = {
     sEmail: string;
     sPassword: string;
 }
-export type RegisterCreds={
+export type RegisterCreds = {
     sEmail: string;
     sDisplayName: string;
     sPassword: string;

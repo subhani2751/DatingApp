@@ -6,7 +6,7 @@ namespace DatingApp.Extentions
 {
     public static class AppUserExtentions
     {
-        public static UserDTO ToDto(this AppUser user,ITokenService tokenService)
+        public static async Task<UserDTO> ToDto(this AppUser user,ITokenService tokenService)
         {
             return new UserDTO
             {
@@ -14,7 +14,7 @@ namespace DatingApp.Extentions
                 sDisplayName = user.sDisplayName,
                 sEmail = user.sEmail,
                 sImageUrl = user.sImageUrl,
-                sToken = tokenService.CreateToken(user)
+                sToken = await tokenService.CreateToken(user)
             };
         }
     }

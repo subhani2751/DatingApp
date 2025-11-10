@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.Controllers
 {
@@ -25,6 +26,12 @@ namespace DatingApp.Controllers
         public IActionResult GetBadRequest()
         {
             return BadRequest("This is a bad request");
+        }
+        [Authorize(Roles ="Admin")]
+        [HttpGet("admin-secret")]
+        public ActionResult<string> GetSecretAdmin()
+        {
+            return Ok("only admins should see this");
         }
 
     }
