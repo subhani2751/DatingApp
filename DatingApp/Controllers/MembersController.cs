@@ -1,6 +1,7 @@
 ﻿using DatingApp.DTOs;
 using DatingApp.Entities;
 using DatingApp.Extentions;
+using DatingApp.Helpers;
 using DatingApp.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,9 +13,10 @@ namespace DatingApp.Controllers
     public class MembersController(IMemberrepository memberrepository,IPhotoService photoService) : BaseApiController
     {
         [HttpGet("GetMembers")]
-        public async Task<ActionResult<List<Member>>> GetMembers()
+        public async Task<ActionResult<List<Member>>> GetMembers([FromQuery]MemberParams memberParams)
         {
-            return Ok(await memberrepository.GetMembersAsync());
+            memberParams.CurrentMemberId = User.GetMemberId();
+            return Ok(await memberrepository.GetMembersAsync(memberParams));
         }
         
         [HttpGet("{id}")]

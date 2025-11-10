@@ -1,6 +1,7 @@
+import { LikesService } from './../../../Core/services/likes-service';
 import { RouterLink } from '@angular/router';
 import { Member } from './../../../Types/member';
-import { Component, input } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { AgePipe } from '../../../Core/pipes/age-pipe';
 
 @Component({
@@ -10,6 +11,21 @@ import { AgePipe } from '../../../Core/pipes/age-pipe';
   styleUrl: './members-card.css'
 })
 export class MembersCard {
- member=input.required<Member>();
+  private likeService = inject(LikesService);
+  member = input.required<Member>();
+  protected hasLiked = computed(() => this.likeService.likedIds().includes(this.member().sID));
 
+  toggleLike(event: Event) {
+    event.stopPropagation();
+    this.likeService.toggleLike(this.member().sID).subscribe({
+      next: () => {
+        if (this.hasLiked()) {
+          this.likeService.likedIds.update(ids => ids.filter(x => x !== this.member().sID));
+        }
+        else {
+          this.likeService.likedIds.update(ids => [...ids, this.member().sID]);
+        }
+      }
+    })
+  }
 }

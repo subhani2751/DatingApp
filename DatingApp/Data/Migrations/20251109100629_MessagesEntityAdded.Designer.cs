@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251103120042_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251109100629_MessagesEntityAdded")]
+    partial class MessagesEntityAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,6 +95,59 @@ namespace DatingApp.Data.Migrations
                     b.ToTable("Members");
                 });
 
+            modelBuilder.Entity("DatingApp.Entities.MemberLike", b =>
+                {
+                    b.Property<string>("SourceMemberId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("TargetMemberId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("SourceMemberId", "TargetMemberId");
+
+                    b.HasIndex("TargetMemberId");
+
+                    b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("DatingApp.Entities.Message", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateRead")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("MessageSent")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("RecipientDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("RecipientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("SenderDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SenderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecipientId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("DatingApp.Entities.Photo", b =>
                 {
                     b.Property<int>("sId")
@@ -132,6 +185,44 @@ namespace DatingApp.Data.Migrations
                     b.Navigation("user");
                 });
 
+            modelBuilder.Entity("DatingApp.Entities.MemberLike", b =>
+                {
+                    b.HasOne("DatingApp.Entities.Member", "SourceMember")
+                        .WithMany("LikedMembers")
+                        .HasForeignKey("SourceMemberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.Entities.Member", "TargetMember")
+                        .WithMany("LikedByMembers")
+                        .HasForeignKey("TargetMemberId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("SourceMember");
+
+                    b.Navigation("TargetMember");
+                });
+
+            modelBuilder.Entity("DatingApp.Entities.Message", b =>
+                {
+                    b.HasOne("DatingApp.Entities.Member", "Recipient")
+                        .WithMany("MessagesRecived")
+                        .HasForeignKey("RecipientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("DatingApp.Entities.Member", "Sender")
+                        .WithMany("MessagesSent")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Recipient");
+
+                    b.Navigation("Sender");
+                });
+
             modelBuilder.Entity("DatingApp.Entities.Photo", b =>
                 {
                     b.HasOne("DatingApp.Entities.Member", "Member")
@@ -151,6 +242,14 @@ namespace DatingApp.Data.Migrations
 
             modelBuilder.Entity("DatingApp.Entities.Member", b =>
                 {
+                    b.Navigation("LikedByMembers");
+
+                    b.Navigation("LikedMembers");
+
+                    b.Navigation("MessagesRecived");
+
+                    b.Navigation("MessagesSent");
+
                     b.Navigation("Photos");
                 });
 #pragma warning restore 612, 618

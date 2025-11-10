@@ -22,6 +22,14 @@ namespace DatingApp.Entities
         [JsonIgnore]
         public List<Photo> Photos { get; set; } = [];
         [JsonIgnore]
+        public List<MemberLike> LikedByMembers { get; set; } = [];
+        [JsonIgnore]
+        public List<Message> MessagesSent { get; set; } = [];
+        [JsonIgnore]
+        public List<Message> MessagesRecived { get; set; } = [];
+        [JsonIgnore]
+        public List<MemberLike> LikedMembers { get; set; } = [];
+        [JsonIgnore]
         [ForeignKey(nameof(sID))]
         //Navigation property
         public AppUser user { get; set; } = null!;
