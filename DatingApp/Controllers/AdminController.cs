@@ -20,9 +20,9 @@ namespace DatingApp.Controllers
                 var role = await userManager.GetRolesAsync(user);
                 userList.Add(new
                 {
-                    user.Id,
+                    sId = user.sID,
                     //user.Email,
-                    user.sEmail,
+                    sEmail = user.sEmail,
                     Roles = role.ToList()
                 });
             }

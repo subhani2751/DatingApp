@@ -27,6 +27,7 @@
             @for (role of availableRoles; track $index) {
                 <label class="fieldset-label">
                     <input 
+                        (change)="toggleRole($event,role)"
                         type="checkbox"
                         [checked]="selectedUser?.roles?.includes(role)"
                         class="checkbox"
@@ -37,10 +38,10 @@
             }
         </fieldset>
         <div class="modal-action">
-            <button class="btn btn-primary">Submit</button>
+            <button class="btn btn-primary" (click)="upDateRoles()">Submit</button>
         </div>
     </div>
-    <form method="dailog" class="modal-backdrop">
+    <form method="dialog" class="modal-backdrop">
         <button>Close</button>
     </form>
 </dialog>

@@ -60,7 +60,10 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseCors(policy =>
 {
-    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200", "https://localhost:4200");
+    policy.AllowAnyHeader()
+          .AllowAnyMethod()
+          .AllowCredentials()
+          .WithOrigins("http://localhost:4200", "https://localhost:4200");
 });
 //app.UseDeveloperExceptionPage();
 //app.UseExceptionHandler("/error");

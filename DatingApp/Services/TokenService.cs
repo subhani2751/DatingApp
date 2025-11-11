@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 
 namespace DatingApp.Services
 {
@@ -37,6 +38,11 @@ namespace DatingApp.Services
             var tokenHandler= new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(TokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+        public string GenerateRefreshToken()
+        {
+            var randomBytes = RandomNumberGenerator.GetBytes(64);
+            return Convert.ToBase64String(randomBytes);
         }
 
     }
