@@ -1,0 +1,14 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace DatingApp.Entities
+{
+    public class Group(string name)
+    {
+        [Key]
+        public required string Name { get; set; } = name;
+
+        //Navigation property
+        public ICollection<Connection> Connections { get; set; } = [];
+
+    }
+}

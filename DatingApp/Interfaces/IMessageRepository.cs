@@ -12,5 +12,11 @@ namespace DatingApp.Interfaces
         Task<PaginatedResult<MessageDTO>> GetMessagesForMember(MessageParams messageParams);
         Task<IReadOnlyList<MessageDTO>> GetMessageThreadAsync(string currentMemberId, string recipientId);
         Task<bool> SaveAllAsync();
+
+        void AddGroup(Group group);
+        Task RemoveConnection(string connectionId);
+        Task<Connection?> GetConnection(string connectionId);
+        Task<Group?> GetMessageName(string groupName);
+        Task<Group?> GetGroupForConnection(string connectionId);
     }
 }

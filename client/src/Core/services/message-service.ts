@@ -1,16 +1,50 @@
-import { inject, Injectable } from '@angular/core';
+import { Message } from './../../Types/message';
+import { AccountService } from './account-service';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { PaginatedResult } from '../../Types/pagination';
-import { Message } from '../../Types/message';
 import { StringToken } from '@angular/compiler';
+import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageService {
   private baseUrl = environment.apiUrl;
+  private hubUrl = environment.hubUrl;
   private http = inject(HttpClient);
+  private accountService = inject(AccountService);
+  private hubConnection?: HubConnection;
+  messageThread = signal<Message[]>([]);
+
+  CreateHubConnection(otherUserId: string) {
+    debugger;
+    const currentUser = this.accountService.currentUser();
+    if (!currentUser) return;
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl(this.hubUrl + 'messages?userId=' + otherUserId, {
+        accessTokenFactory: () => currentUser.sToken
+      }).withAutomaticReconnect()
+      .build();
+    this.hubConnection.start().catch(error => console.log(error));
+
+    this.hubConnection.on('ReceiveMessagesThread', (messages: Message[]) => {
+      this.messageThread.set(messages.map(message => ({
+        ...message, currentUserSender: message.senderId !== otherUserId
+      })))
+    })
+
+    this.hubConnection.on('NewMessage', (message : Message) => {
+      message.currentUserSender = message.senderId === currentUser.sId;
+      this.messageThread.update(messages => [...messages, message])
+    })
+  }
+  stopHubConnection() {
+    if (this.hubConnection?.state === HubConnectionState.Connected) {
+      this.hubConnection.stop().catch(error => console.log(error))
+    }
+  }
 
   getMessages(container: string, pageNumber: number, pageSize: number) {
     let params = new HttpParams();
@@ -25,10 +59,10 @@ export class MessageService {
   }
 
   sendMessage(recipientId: string, content: string) {
-    return this.http.post<Message>(this.baseUrl + 'messages/CreateMessage', { recipientId, content })
+    return this.hubConnection?.invoke('SendMessage', { recipientId, content })
   }
 
-  deleteMessage(id: string){
+  deleteMessage(id: string) {
     return this.http.delete(this.baseUrl + 'messages/' + id)
   }
 }
