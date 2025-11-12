@@ -49,7 +49,7 @@ namespace DatingApp.Controllers
         public async Task<ActionResult> DeleteMessage(string id)
         {
             var memberId = User.GetMemberId();
-            var message = await messageRepository.GetMessageBy(id);
+            var message = await messageRepository.GetMessage(id);
             if(message == null) return BadRequest("Cannot delete this message");
             if(message.SenderId != memberId && message.RecipientId != memberId)
             {

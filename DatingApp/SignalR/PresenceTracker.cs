@@ -28,5 +28,13 @@ namespace DatingApp.SignalR
         {
             return Task.FromResult(OnlineUsers.Keys.OrderBy(k => k).ToArray());
         }
+        public static Task<List<string>> GetConnectionForUser(string userId)
+        {
+            if (OnlineUsers.TryGetValue(userId, out var connections))
+            {
+                return Task.FromResult(connections.Keys.ToList());
+            }
+            return Task.FromResult(new List<string>());
+        }
     }
 }

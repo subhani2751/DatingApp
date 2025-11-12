@@ -8,7 +8,7 @@ namespace DatingApp.Interfaces
     {
         void AddMessage(Message message);
         void DeleteMessage(Message message);
-        Task<Message?> GetMessageBy(string id);
+        Task<Message?> GetMessage(string id);
         Task<PaginatedResult<MessageDTO>> GetMessagesForMember(MessageParams messageParams);
         Task<IReadOnlyList<MessageDTO>> GetMessageThreadAsync(string currentMemberId, string recipientId);
         Task<bool> SaveAllAsync();
@@ -16,7 +16,7 @@ namespace DatingApp.Interfaces
         void AddGroup(Group group);
         Task RemoveConnection(string connectionId);
         Task<Connection?> GetConnection(string connectionId);
-        Task<Group?> GetMessageName(string groupName);
+        Task<Group?> GetMessageGroup(string groupName);
         Task<Group?> GetGroupForConnection(string connectionId);
     }
 }

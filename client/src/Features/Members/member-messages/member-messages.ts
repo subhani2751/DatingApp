@@ -1,7 +1,7 @@
 import { Messages } from './../../messages/messages';
 import { DatePipe } from '@angular/common';
 import { Message } from './../../../Types/message';
-import { Component, effect, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { MessageService } from '../../../Core/services/message-service';
 import { MemberService } from '../../../Core/services/member-service';
 import { TimeAgoPipe } from '../../../Core/pipes/time-ago-pipe';
@@ -15,7 +15,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './member-messages.html',
   styleUrl: './member-messages.css'
 })
-export class MemberMessages implements OnInit {
+export class MemberMessages implements OnInit,OnDestroy {
   @ViewChild('messageEndRef') messageEndRef!: ElementRef;
   protected messageService = inject(MessageService);
   private memberService = inject(MemberService);
@@ -30,6 +30,9 @@ export class MemberMessages implements OnInit {
         this.scrollToBottom();
       }
     });
+  }
+  ngOnDestroy(): void {
+    this.messageService.stopHubConnection();
   }
 
   ngOnInit(): void {

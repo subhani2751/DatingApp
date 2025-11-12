@@ -37,12 +37,12 @@ namespace DatingApp.Data
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<Message?> GetMessageBy(string id)
+        public async Task<Message?> GetMessage(string id)
         {
             return await context.Messages.FindAsync(id);
         }
 
-        public async Task<Group?> GetMessageName(string groupName)
+        public async Task<Group?> GetMessageGroup(string groupName)
         {
             return await context.Groups
                 .Include(g => g.Connections)
