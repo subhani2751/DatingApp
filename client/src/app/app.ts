@@ -1,10 +1,11 @@
 import { Component, inject} from '@angular/core';
 import { Nav } from "../Layout/nav/nav";
 import { Router, RouterOutlet } from '@angular/router';
+import { ConfirmDailog } from '../Shared/confirm-dailog/confirm-dailog';
 
 @Component({
   selector: 'app-root',
-  imports: [Nav,  RouterOutlet],
+  imports: [Nav,  RouterOutlet, ConfirmDailog],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

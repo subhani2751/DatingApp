@@ -10,6 +10,5 @@ namespace DatingApp.Interfaces
         Task<IReadOnlyList<string>> GetcurrentMemberLikeIds(string memberId);
         void AddLike(MemberLike memberLike);
         void DeleteLike(MemberLike memberLike);
-        Task<bool> SaveAllChanges();
     }
 }

@@ -47,11 +47,6 @@ namespace DatingApp.Data
                                       .ToListAsync();
         }
 
-        public async Task<bool> SaveAllAsync()
-        {
-            return await Context.SaveChangesAsync() > 0;
-        }
-
         public void Update(Member member)
         {
             Context.Entry(member).State = EntityState.Modified;
