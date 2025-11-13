@@ -12,26 +12,35 @@ export class LikesService {
   private http = inject(HttpClient);
   likedIds = signal<string[]>([]);
 
-  toggleLike(tragetMemberId: string){
-    return this.http.post(`${this.baseUrl}likes/${tragetMemberId}`,{});
+  toggleLike(tragetMemberId: string) {
+    return this.http.post(`${this.baseUrl}likes/${tragetMemberId}`, {}).subscribe({
+      next: () => {
+        if (this.likedIds().includes(tragetMemberId)) {
+          this.likedIds.update(ids => ids.filter(x => x !== tragetMemberId));
+        }
+        else {
+          this.likedIds.update(ids => [...ids, tragetMemberId]);
+        }
+      }
+    });
   }
 
-  getLikes(predicate: string,pageNumber: number, pageSize: number){
+  getLikes(predicate: string, pageNumber: number, pageSize: number) {
     let params = new HttpParams();
-    params = params.append('pageNumber',pageNumber);
-    params = params.append('pageSize',pageSize);
-    params = params.append('predicate',predicate);
-    return this.http.get<PaginatedResult<Member>>(this.baseUrl + 'likes/GetMemberLikes' , {params});
+    params = params.append('pageNumber', pageNumber);
+    params = params.append('pageSize', pageSize);
+    params = params.append('predicate', predicate);
+    return this.http.get<PaginatedResult<Member>>(this.baseUrl + 'likes/GetMemberLikes', { params });
   }
 
-  getLikeIds(){
+  getLikeIds() {
     return this.http.get<string[]>(this.baseUrl + 'likes/list').subscribe({
-      next: ids=> {
+      next: ids => {
         this.likedIds.set(ids);
       }
     });
   }
-  clearLikeIds(){
+  clearLikeIds() {
     this.likedIds.set([]);
   }
 
