@@ -87,9 +87,15 @@ app.UseCors(policy =>
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.MapControllers();
 app.MapHub<PresenceHub>("hubs/presence");
 app.MapHub<MessageHub>("hubs/messages");
+
+app.MapFallbackToController("Index", "Fallback");
+
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
