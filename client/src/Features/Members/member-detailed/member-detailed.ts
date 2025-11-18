@@ -14,14 +14,14 @@ import { LikesService } from '../../../Core/services/likes-service';
   templateUrl: './member-detailed.html',
   styleUrl: './member-detailed.css'
 })
-export class MemberDetailed implements OnInit {
+export class MemberDetailed{
   private route = inject(ActivatedRoute);
   protected memberService = inject(MemberService)
   private accountservice = inject(AccountService);
   protected presenceService = inject(PresenceService);
   protected likeService = inject(LikesService);
   private router = inject(Router);
-  protected title = signal<string | undefined>('Profile');
+ 
   private routeId = signal<string | null>(null);
   protected isCurrentUser = computed(() => {
     return this.accountservice.currentUser()?.sId === this.routeId();
@@ -32,18 +32,5 @@ export class MemberDetailed implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.routeId.set(params.get('id'));
     })
-  }
-
-  ngOnInit(): void {
-    this.title.set(this.route.firstChild?.snapshot?.title);
-
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(
-      {
-        next: () => {
-          this.title.set(this.route.firstChild?.snapshot?.title)
-        }
-      })
   }
 }

@@ -13,6 +13,7 @@ export class MemberService {
   private baseUrl = environment.apiUrl;
   editmode = signal(false);
   member = signal<Member | null>(null)
+  title = signal<string>('');
 
   getMembers(memberParams: MemberParams) {
     let params = new HttpParams();

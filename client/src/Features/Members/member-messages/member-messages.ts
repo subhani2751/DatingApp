@@ -36,6 +36,7 @@ export class MemberMessages implements OnInit,OnDestroy {
   }
 
   ngOnInit(): void {
+    this.memberService.title.set("Messages");
     this.route.parent?.paramMap.subscribe({
       next: params =>{
         const otherUserId = params.get('id');

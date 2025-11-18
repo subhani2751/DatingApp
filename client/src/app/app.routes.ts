@@ -31,9 +31,9 @@ export const routes: Routes = [
                 component: MemberDetailed,
                 children: [
                     { path: '', redirectTo: 'profile', pathMatch: 'full' },
-                    { path: 'profile', component: MemberProfile, title: 'Profile', canDeactivate: [preventUnsavedChnagesGuard] },
-                    { path: 'photos', component: MemberPhotos, title: 'Photos' },
-                    { path: 'messages', component: MemberMessages, title: 'Messages' },
+                    { path: 'profile', component: MemberProfile,  canDeactivate: [preventUnsavedChnagesGuard] },
+                    { path: 'photos', component: MemberPhotos},
+                    { path: 'messages', component: MemberMessages},
                 ]
             },
             { path: 'lists', component: Lists },

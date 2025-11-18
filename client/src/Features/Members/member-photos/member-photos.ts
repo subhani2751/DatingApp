@@ -7,6 +7,7 @@ import { AccountService } from '../../../Core/services/account-service';
 import { User } from '../../../Types/User';
 import { StarButton } from "../../../Shared/star-button/star-button";
 import { DeleteButton } from "../../../Shared/delete-button/delete-button";
+import { MemberDetailed } from '../member-detailed/member-detailed';
 
 @Component({
   selector: 'app-member-photos',
@@ -22,6 +23,7 @@ export class MemberPhotos implements OnInit {
   protected loading = signal(false);
 
   ngOnInit(): void {
+    this.memberService.title.set("Photos");
     const memberId = this.route.parent?.snapshot.paramMap.get('id')
     if (memberId) {
       this.memberService.getMemverPhotos(memberId).subscribe({
