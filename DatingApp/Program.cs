@@ -13,13 +13,21 @@ using DatingApp.SignalR;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Load connection string from DBConfig.xml
+string connectionString = DbConfigHelper.GetConnectionString();
+
 // Add services to the container.
 
 builder.Services.AddControllers();
+//builder.Services.AddDbContext<AppDbContext>(opt =>
+//{
+//    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+//});
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    opt.UseSqlServer(connectionString);
 });
+
 builder.Services.AddCors();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IPhotoService, PhotoService>();
@@ -120,9 +128,6 @@ catch (Exception ex)
     var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
     logger.LogError(ex, "An error occurred during migration");
 }
-
-
-
 
 
 app.Run();

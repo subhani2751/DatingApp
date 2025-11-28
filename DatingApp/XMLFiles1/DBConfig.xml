@@ -1,0 +1,25 @@
+<?xml version="1.0" standalone="yes"?>
+<DatabaseConfig>
+  <Database Active="1" Type="SQLServer">
+    <Data_Source>172.16.1.246\SQL2022</Data_Source>
+    <User_Id>sa</User_Id>
+    <Initial_Catalog>Focus8</Initial_Catalog>
+    <User_ID>sa</User_ID>
+    <Password>focus</Password>
+  </Database>
+  <Database Active="0" Type="MySql">
+    <Server />
+    <Uid />
+    <Pwd />
+    <Database />
+  </Database>
+  <Database Active="0" Type="Oracle">
+    <Data_Source />
+    <User_Id />
+    <Password />
+  </Database>
+  <Database Active="0" Type="PostgreSQL">
+    <User_Name />
+    <Database />
+  </Database>
+</DatabaseConfig>
