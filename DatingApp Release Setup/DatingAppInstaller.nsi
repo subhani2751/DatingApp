@@ -31,11 +31,11 @@ Var NGINX_PATH_FROM_USER
 Var DOTNET_PATH_FROM_USER
 
 ;---------------- Icons --------------------
-Icon "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingAppicon.ico"
-UninstallIcon "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingAppicon.ico"
+; Icon "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingApp.ico"
+; UninstallIcon "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingApp.ico"
 
-!define MUI_ICON   "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingAppicon.ico"
-!define MUI_UNICON "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingAppicon.ico"
+!define MUI_ICON   "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingApp.ico"
+!define MUI_UNICON "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingApp.ico"
 
 !define MUI_HEADERIMAGE
 !define MUI_HEADERIMAGE_BITMAP "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingApp.bmp"
