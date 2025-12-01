@@ -1,0 +1,12 @@
+End User License Agreement (EULA)
+
+By installing or using this software, you agree to the following terms:
+
+1. This software is owned by [Your Company Name].  
+2. You may not modify, distribute, or resell this software without written permission.  
+3. This software is provided “as is” without warranties of any kind.  
+4. The user is responsible for any risks that may occur from using this software.  
+5. Do not attempt to reverse engineer, decompile, or bypass any security mechanism.
+6. All application files, configurations, and code remain the property of [Your Company Name].
+
+If you do not agree to these terms, please cancel the installation.
