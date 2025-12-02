@@ -2,7 +2,7 @@ End User License Agreement (EULA)
 
 By installing or using this software, you agree to the following terms:
 
-1. This software is owned by [Your Company Name].  
+1. This software is owned by GrowHigh Pvt Ltd.  
 2. You may not modify, distribute, or resell this software without written permission.  
 3. This software is provided “as is” without warranties of any kind.  
 4. The user is responsible for any risks that may occur from using this software.  
