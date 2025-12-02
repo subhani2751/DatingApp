@@ -7,7 +7,7 @@ REM ============================================
 set ANGULAR_PATH=C:\Users\subha\source\repos\DatingApp\client
 set DOTNET_PATH=C:\Users\subha\source\repos\DatingApp\DatingApp
 set PUBLISH_PATH=C:\Users\subha\source\repos\DatingAppPublish
-set NSIS_SCRIPT=C:\Users\subha\source\repos\DatingApp\DatingApp Release Setup\PSLInstallerSetup.nsi
+set NSIS_SCRIPT=C:\Users\subha\source\repos\DatingApp\DatingApp Release Setup\PLInstallerSetup.nsi
 set PATCH_ROOT=C:\Users\subha\source\repos\Patch
 
 REM ============================================
