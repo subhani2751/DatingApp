@@ -11,9 +11,9 @@ OutFile "DatingApp.exe"
 BrandingText "GrowHigh Pvt Ltd"
 
 ; Default install dir (used if user does not change nginx path)
-!define SOURCE_PATH "C:\Users\subhani\Desktop\MVC\DatingAppPublish"
-!define NGINX_PATH  "C:\Users\subhani\Desktop\MVC\nginx-1.28.0\bin"
-InstallDir "${NGINX_PATH}"       ; <--- IMPORTANT: $INSTDIR is now valid
+!define SOURCE_PATH "C:\Users\subha\source\repos\DatingAppPublish"
+!define NGINX_PATH  "C:\Users\subha\source\repos\nginx-1.28.0\bin"
+InstallDir "${NGINX_PATH}"; <--- IMPORTANT: $INSTDIR is now valid
 
 RequestExecutionLevel admin
 
@@ -33,20 +33,21 @@ Var DOTNET_PATH_FROM_USER
 
 ;---------------- Icons --------------------
 
-!define MUI_ICON   "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingApp.ico"
-!define MUI_UNICON "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingApp.ico"
+!define MUI_ICON   "C:\Users\subha\source\repos\DatingApp\DatingApp Release Setup PL\DatingApp.ico"
+!define MUI_UNICON "C:\Users\subha\source\repos\DatingApp\DatingApp Release Setup PL\DatingApp.ico"
 
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingApp.bmp"
+!define MUI_HEADERIMAGE_BITMAP "C:\Users\subha\source\repos\DatingApp\DatingApp Release Setup PL\DatingApp.bmp"
 !define MUI_HEADERIMAGE_RIGHT
-!define MUI_WELCOMEFINISHPAGE_BITMAP "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\DatingApp.bmp"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "C:\Users\subha\source\repos\DatingApp\DatingApp Release Setup PL\DatingApp.bmp"
 
 ;---------------- Pages --------------------
 !insertmacro MUI_PAGE_WELCOME
-!insertmacro MUI_PAGE_LICENSE "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup\License.txt"
+!insertmacro MUI_PAGE_LICENSE "C:\Users\subha\source\repos\DatingApp\DatingApp Release Setup PL\License.txt"
 
 Page custom Page_SelectPaths Page_LeaveSelectPaths
 
+!insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 

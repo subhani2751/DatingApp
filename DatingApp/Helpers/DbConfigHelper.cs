@@ -19,22 +19,41 @@ namespace DatingApp.Helpers
                     (string?)x.Attribute("Active") == "1" &&
                     (string?)x.Attribute("Type") == "SQLServer");
 
-            if (activeDb == null)
-                throw new Exception("Active SQLServer configuration not found in DBConfig.xml");
+            if (activeDb != null)
+            {
+                string dataSource = activeDb.Element("Data_Source")?.Value
+                               ?? throw new Exception("Data_Source missing");
 
-            string dataSource = activeDb.Element("Data_Source")?.Value
-                                ?? throw new Exception("Data_Source missing");
+                string userId = activeDb.Element("User_Id")?.Value
+                                ?? throw new Exception("User_Id missing");
 
-            string userId = activeDb.Element("User_Id")?.Value
-                            ?? throw new Exception("User_Id missing");
+                string catalog = activeDb.Element("Initial_Catalog")?.Value
+                                 ?? throw new Exception("Initial_Catalog missing");
 
-            string catalog = activeDb.Element("Initial_Catalog")?.Value
-                             ?? throw new Exception("Initial_Catalog missing");
+                string password = activeDb.Element("Password")?.Value
+                                  ?? throw new Exception("Password missing");
 
-            string password = activeDb.Element("Password")?.Value
-                              ?? throw new Exception("Password missing");
+                return $"Server={dataSource};Database={catalog};User Id={userId};Password={password};TrustServerCertificate=True;Encrypt=False;";
+            }
 
-            return $"Server={dataSource};Database={catalog};User Id={userId};Password={password};TrustServerCertificate=True;Encrypt=False;";
+            activeDb = doc.Descendants("Database")
+                .FirstOrDefault(x =>
+                    (string?)x.Attribute("Active") == "1" &&
+                    (string?)x.Attribute("Type") == "SQLServerWA");
+
+            if (activeDb != null)
+            {
+                string dataSource = activeDb.Element("Data_Source")?.Value
+                               ?? throw new Exception("Data_Source missing");
+
+                string catalog = activeDb.Element("Initial_Catalog")?.Value
+                                 ?? throw new Exception("Initial_Catalog missing");
+
+                return $"Server={dataSource};Database={catalog};TrustServerCertificate=True;Encrypt=False;";
+            }
+
+            return string.Empty;
+
         }
     }
 }

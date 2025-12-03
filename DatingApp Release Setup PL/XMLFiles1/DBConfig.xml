@@ -1,0 +1,22 @@
+<?xml version="1.0" standalone="yes"?>
+<DatabaseConfig>
+  <Database Active="1" Type="SQLServerWA">
+    <Data_Source>SUBHANI</Data_Source>
+    <Initial_Catalog>Datingapp</Initial_Catalog>
+  </Database>
+  <Database Active="0" Type="MySql">
+    <Server />
+    <Uid />
+    <Pwd />
+    <Database />
+  </Database>
+  <Database Active="0" Type="Oracle">
+    <Data_Source />
+    <User_Id />
+    <Password />
+  </Database>
+  <Database Active="0" Type="PostgreSQL">
+    <User_Name />
+    <Database />
+  </Database>
+</DatabaseConfig>

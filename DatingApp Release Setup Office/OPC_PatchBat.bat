@@ -4,11 +4,11 @@ setlocal enabledelayedexpansion
 REM ============================================
 REM 1 SET YOUR PATHS
 REM ============================================
-set ANGULAR_PATH=C:\Users\subha\source\repos\DatingApp\client
-set DOTNET_PATH=C:\Users\subha\source\repos\DatingApp\DatingApp
-set PUBLISH_PATH=C:\Users\subha\source\repos\DatingAppPublish
-set NSIS_SCRIPT=C:\Users\subha\source\repos\DatingApp\DatingApp Release Setup\PLInstallerSetup.nsi
-set PATCH_ROOT=C:\Users\subha\source\repos\Patch
+set ANGULAR_PATH=C:\Users\subhani\Desktop\MVC\DatingApp\client
+set DOTNET_PATH=C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp
+set PUBLISH_PATH=C:\Users\subhani\Desktop\MVC\DatingAppPublish
+set NSIS_SCRIPT=C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup Office\OPCInstallerSetup.nsi
+set PATCH_ROOT=C:\Users\subhani\Desktop\MVC\Patch
 
 REM ============================================
 REM 2️ CLEAN PUBLISH FOLDER
