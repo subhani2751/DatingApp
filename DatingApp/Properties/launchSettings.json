@@ -7,18 +7,18 @@
       },
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:5050"
+      "applicationUrl": "http://localhost:5277"
     },
-    "https": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      //"applicationUrl": "https://localhost:5050;https://localhost:5050"
-      "applicationUrl": "https://localhost:5051"
-    },
+    //"https": {
+    //  "commandName": "Project",
+    //  "environmentVariables": {
+    //    "ASPNETCORE_ENVIRONMENT": "Development"
+    //  },
+    //  "dotnetRunMessages": true,
+    //  "launchBrowser": false,
+    //  //"applicationUrl": "https://localhost:5050;https://localhost:5050"
+    //  "applicationUrl": "https://localhost:5051"
+    //},
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": false,

@@ -12,7 +12,7 @@ BrandingText "GrowHigh Pvt Ltd"
 
 ; Default install dir (used if user does not change nginx path)
 !define SOURCE_PATH "C:\Users\subhani\Desktop\MVC\DatingAppPublish"
-!define NGINX_PATH  "C:\Users\subhani\Desktop\MVC\nginx-1.28.0\bin"
+!define NGINX_PATH  "C:\Users\subhani\Desktop\MVC\nginx-1.28.0"
 InstallDir "${NGINX_PATH}"; <--- IMPORTANT: $INSTDIR is now valid
 
 RequestExecutionLevel admin
@@ -37,7 +37,7 @@ Var DOTNET_PATH_FROM_USER
 !define MUI_UNICON "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup Office\DatingApp.ico"
 
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup Officep\DatingApp.bmp"
+!define MUI_HEADERIMAGE_BITMAP "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup Office\DatingApp.bmp"
 !define MUI_HEADERIMAGE_RIGHT
 !define MUI_WELCOMEFINISHPAGE_BITMAP "C:\Users\subhani\Desktop\MVC\DatingApp\DatingApp Release Setup Office\DatingApp.bmp"
 
@@ -52,25 +52,53 @@ Page custom Page_SelectPaths Page_LeaveSelectPaths
 
 !insertmacro MUI_LANGUAGE "English"
 
-;=================================================
 ;  INSTALL SECTION
-;=================================================
 Section "DatingApp" DatingApp_ID
 
+	;restart datingapp...
+    detailprint "stop datingapp..."
+    nsexec::exec 'taskkill /IM datingapp.exe /F'
+    sleep 5000
+	
     DetailPrint "INSTALL DIR = $INSTDIR"
     DetailPrint "Copying files to install folder..."
 
     ; Install everything into $INSTDIR (which is the NGINX path chosen by user)
-    SetOutPath "$INSTDIR"
+    SetOutPath "$INSTDIR\bin"
     File /r "${SOURCE_PATH}\*.*"
+	
+	; Remove wwwroot so we can place Angular files correctly
+    RMDir /r "$INSTDIR\bin\wwwroot"
+	
+	;COPY ANGULAR BUILD FILES → NGINX/html
+	DetailPrint "Copying Angular files to NGINX html folder..."
+
+    SetOutPath "$INSTDIR\html"
+    File /r "${SOURCE_PATH}\wwwroot\*.*"
 
     DetailPrint "User selected DOTNET PATH = $DOTNET_PATH_FROM_USER"
+	
+	;START .NET WEB API (DatingApp.exe)
+	DetailPrint "Starting DatingApp.exe ..."
+	SetOutPath "$INSTDIR\bin"
+    Exec '"$INSTDIR\bin\DatingApp.exe"'  
+	
+	;RESTART NGINX SERVER
+	DetailPrint "Restarting nginx..."
+    nsExec::ExecToLog 'taskkill /IM nginx.exe /F'
+    Sleep 5000
+	
+	;START NGINX SERVER (nginx.exe)
+	DetailPrint "Starting nginx.exe ..."
+	SetOutPath "$INSTDIR"
+    Exec '"$INSTDIR\nginx.exe"'     
+	Sleep 5000
+	
 
 SectionEnd
 
-;=================================================
+
 ;  CUSTOM PAGE: NGINX + DOTNET PATHS
-;=================================================
 Function Page_SelectPaths
     nsDialogs::Create 1018
     Pop $0
