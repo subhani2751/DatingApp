@@ -11,9 +11,12 @@ OutFile "DatingApp.exe"
 BrandingText "GrowHigh Pvt Ltd"
 
 ; Default install dir (used if user does not change nginx path)
+!define APP_NAME "DatingApp"
 !define SOURCE_PATH "C:\Users\subha\source\repos\DatingAppPublish"
-!define NGINX_PATH  "C:\Users\subha\source\repos\nginx-1.28.0\bin"
-InstallDir "${NGINX_PATH}"; <--- IMPORTANT: $INSTDIR is now valid
+!define NGINX_PATH  "C:\Users\subha\source\repos\nginx-1.28.0"
+!define IIS_DEPLOY_PATH "C:\inetpub\wwwroot\DatingApp"
+!define SERVICE_NAME "DatingAppService"
+InstallDir "${NGINX_PATH}"; 
 
 RequestExecutionLevel admin
 
@@ -48,30 +51,83 @@ Var DOTNET_PATH_FROM_USER
 Page custom Page_SelectPaths Page_LeaveSelectPaths
 
 !insertmacro MUI_PAGE_COMPONENTS
+
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
 !insertmacro MUI_LANGUAGE "English"
 
-;=================================================
 ;  INSTALL SECTION
-;=================================================
 Section "DatingApp" DatingApp_ID
-
-    DetailPrint "INSTALL DIR = $INSTDIR"
-    DetailPrint "Copying files to install folder..."
-
-    ; Install everything into $INSTDIR (which is the NGINX path chosen by user)
+	DetailPrint "INSTALL DIR = $INSTDIR"
+    DetailPrint "Stopping any existing services..."
+    
+    ; Stop and remove existing service if it exists
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" stop ${SERVICE_NAME}'
+    Sleep 1000
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" remove ${SERVICE_NAME} confirm'
+    Sleep 1000
+   
+    ; Copy NSSM first (needed for service management)
+    DetailPrint "Copying NSSM service manager..."
     SetOutPath "$INSTDIR"
+    File "nssm.exe"
+    
+    DetailPrint "Copying backend files..."
+    SetOutPath "$INSTDIR\bin"
     File /r "${SOURCE_PATH}\*.*"
-
-    DetailPrint "User selected DOTNET PATH = $DOTNET_PATH_FROM_USER"
-
+    
+    ; Remove old wwwroot
+    DetailPrint "Removing old wwwroot..."
+    RMDir /r "$INSTDIR\wwwroot"
+    
+    ; Copy Angular files to NGINX html folder
+    DetailPrint "Copying Angular files to NGINX html folder..."
+    SetOutPath "$INSTDIR\html"
+    File /r "${SOURCE_PATH}\wwwroot\*.*"
+    
+    ; Install DatingApp as Windows Service using NSSM
+    DetailPrint "Installing ${APP_NAME} as Windows service..."
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" install ${SERVICE_NAME} "$INSTDIR\bin\DatingApp.exe"'
+    Sleep 1000
+    
+    ; Configure service settings
+    DetailPrint "Configuring service settings..."
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" set ${SERVICE_NAME} AppDirectory "$INSTDIR\bin"'
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" set ${SERVICE_NAME} DisplayName "${APP_NAME} Service"'
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" set ${SERVICE_NAME} Description "Dating App Backend Service (Kestrel)"'
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" set ${SERVICE_NAME} Start SERVICE_AUTO_START'
+    
+    ; Optional: Set up logging
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" set ${SERVICE_NAME} AppStdout "$INSTDIR\logs\service-output.log"'
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" set ${SERVICE_NAME} AppStderr "$INSTDIR\logs\service-error.log"'
+    
+    ; Create logs directory
+    CreateDirectory "$INSTDIR\logs"
+    
+    ; Start the service
+    DetailPrint "Starting ${APP_NAME} service..."
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" start ${SERVICE_NAME}'
+    Sleep 5000
+    
+    ; Verify service is running
+    nsExec::ExecToLog '"$INSTDIR\nssm.exe" status ${SERVICE_NAME}'
+    
+    ; Restart NGINX
+    DetailPrint "Restarting nginx..."
+    nsExec::ExecToLog 'taskkill /IM nginx.exe /F'
+    Sleep 2000
+    
+    ; Start NGINX
+    DetailPrint "Starting nginx.exe..."
+    SetOutPath "$INSTDIR"
+    Exec '"$INSTDIR\nginx.exe"'
+    Sleep 3000
+    
+    DetailPrint "Installation complete!"
 SectionEnd
 
-;=================================================
 ;  CUSTOM PAGE: NGINX + DOTNET PATHS
-;=================================================
 Function Page_SelectPaths
     nsDialogs::Create 1018
     Pop $0
@@ -89,13 +145,13 @@ Function Page_SelectPaths
     ${NSD_OnClick} $hwndNginxBrowse OnBrowseNginx
 
     ; ---------- DOTNET PATH (one line) ----------
-    ${NSD_CreateLabel} 0 20u 25% 12u ".NET Path:"
+    ${NSD_CreateLabel} 0 20u 25% 12u "IIS Deployment Path:"
     Pop $2
 
     ${NSD_CreateText} 26% 20u 50% 12u ""
     Pop $hwndDotnetTextbox
-    ${NSD_SetText} $hwndDotnetTextbox "C:\Program Files\dotnet"
-
+	
+	${NSD_SetText} $hwndDotnetTextbox "${IIS_DEPLOY_PATH}"
     ${NSD_CreateButton} 78% 20u 20% 12u "Browse..."
     Pop $hwndDotnetBrowse
     ${NSD_OnClick} $hwndDotnetBrowse OnBrowseDotnet
@@ -112,7 +168,7 @@ Function OnBrowseNginx
 FunctionEnd
 
 Function OnBrowseDotnet
-    nsDialogs::SelectFolderDialog "Select .NET Folder" "C:\"
+    nsDialogs::SelectFolderDialog "Select IIS Deployment Folder" "C:\inetpub\wwwroot"
     Pop $0
     ${If} $0 != ""
         ${NSD_SetText} $hwndDotnetTextbox $0
@@ -129,3 +185,4 @@ Function Page_LeaveSelectPaths
     DetailPrint "User selected NGINX PATH  = $NGINX_PATH_FROM_USER"
     DetailPrint "User selected DOTNET PATH = $DOTNET_PATH_FROM_USER"
 FunctionEnd
+

@@ -36,20 +36,20 @@ namespace DatingApp.Helpers
                 return $"Server={dataSource};Database={catalog};User Id={userId};Password={password};TrustServerCertificate=True;Encrypt=False;";
             }
 
-            activeDb = doc.Descendants("Database")
+            var activeDb1 = doc.Descendants("Database")
                 .FirstOrDefault(x =>
                     (string?)x.Attribute("Active") == "1" &&
                     (string?)x.Attribute("Type") == "SQLServerWA");
 
-            if (activeDb != null)
+            if (activeDb1 != null)
             {
-                string dataSource = activeDb.Element("Data_Source")?.Value
+                string dataSource = activeDb1.Element("Data_Source")?.Value
                                ?? throw new Exception("Data_Source missing");
 
-                string catalog = activeDb.Element("Initial_Catalog")?.Value
+                string catalog = activeDb1.Element("Initial_Catalog")?.Value
                                  ?? throw new Exception("Initial_Catalog missing");
 
-                return $"Server={dataSource};Database={catalog};TrustServerCertificate=True;Encrypt=False;";
+                return $"Server={dataSource};Database={catalog};Trusted_Connection=True;Encrypt=False;";
             }
 
             return string.Empty;

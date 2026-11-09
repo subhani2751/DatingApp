@@ -50,6 +50,7 @@ Var DOTNET_PATH_FROM_USER
 
 Page custom Page_SelectPaths Page_LeaveSelectPaths
 
+!insertmacro MUI_PAGE_COMPONENTS
 !insertmacro MUI_PAGE_INSTFILES
 !insertmacro MUI_PAGE_FINISH
 
@@ -59,45 +60,6 @@ Page custom Page_SelectPaths Page_LeaveSelectPaths
 ;  INSTALL SECTION
 Section "DatingApp" DatingApp_ID
 	
-    ; DetailPrint "INSTALL DIR = $INSTDIR"
-    ; DetailPrint "Copying files to install folder..."
-	
-	; nsExec::ExecToLog 'taskkill /IM DatingApp.exe'
-	
-    ; DetailPrint "Backend copied to IIS folder: ${IIS_DEPLOY_PATH}"
-
-    ; ; Install everything into $INSTDIR (which is the NGINX path chosen by user)
-    ; SetOutPath "$INSTDIR\bin"
-    ; File /r "${SOURCE_PATH}\*.*"
-	
-	; ; Remove wwwroot so we can place Angular files correctly
-    ; RMDir /r "$INSTDIR\wwwroot"
-	
-	; ;COPY ANGULAR BUILD FILES → NGINX/html
-	; DetailPrint "Copying Angular files to NGINX html folder..."
-
-    ; SetOutPath "$INSTDIR\html"
-    ; File /r "${SOURCE_PATH}\wwwroot\*.*"
-
-    ; DetailPrint "User selected DOTNET PATH = $DOTNET_PATH_FROM_USER"
-	
-	; ;START NGINX SERVER (nginx.exe)
-	; DetailPrint "Starting DatingApp ..."
-	; SetOutPath "$INSTDIR"
-    ; Exec '"$INSTDIR\bin\DatingApp.exe"'     
-	; Sleep 5000
-	
-	; ;RESTART NGINX SERVER
-	; DetailPrint "Restarting nginx..."
-    ; nsExec::ExecToLog 'taskkill /IM nginx.exe /F'
-    ; Sleep 5000
-	
-	; ;START NGINX SERVER (nginx.exe)
-	; DetailPrint "Starting nginx.exe ..."
-	; SetOutPath "$INSTDIR"
-    ; Exec '"$INSTDIR\nginx.exe"'     
-	; Sleep 5000
-	
 	DetailPrint "INSTALL DIR = $INSTDIR"
     DetailPrint "Stopping any existing services..."
     
@@ -106,16 +68,11 @@ Section "DatingApp" DatingApp_ID
     Sleep 3000
     nsExec::ExecToLog '"$INSTDIR\nssm.exe" remove ${SERVICE_NAME} confirm'
     Sleep 2000
-    
-    ; ; fallback: kill any running processes
-    ; detailprint "ensuring all processes are stopped..."
-    ; nsexec::exectolog 'taskkill /im datingapp.exe /f'
-    ; sleep 2000
-    
-    ; ; Copy NSSM first (needed for service management)
-    ; DetailPrint "Copying NSSM service manager..."
-    ; SetOutPath "$INSTDIR"
-    ; File "nssm.exe"
+   
+    ; Copy NSSM first (needed for service management)
+    DetailPrint "Copying NSSM service manager..."
+    SetOutPath "$INSTDIR"
+    File "nssm.exe"
     
     DetailPrint "Copying backend files..."
     SetOutPath "$INSTDIR\bin"

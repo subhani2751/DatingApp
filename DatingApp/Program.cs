@@ -14,19 +14,19 @@ using DatingApp.SignalR;
 var builder = WebApplication.CreateBuilder(args);
 
 // Load connection string from DBConfig.xml
-string connectionString = DbConfigHelper.GetConnectionString();
+//string connectionString = DbConfigHelper.GetConnectionString();
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-//builder.Services.AddDbContext<AppDbContext>(opt =>
-//{
-//    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-//});
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
-    opt.UseSqlServer(connectionString);
+    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+//builder.Services.AddDbContext<AppDbContext>(opt =>
+//{
+//    opt.UseSqlServer(connectionString);
+//});
 
 builder.Services.AddCors();
 builder.Services.AddScoped<ITokenService, TokenService>();

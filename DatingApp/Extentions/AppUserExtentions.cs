@@ -10,7 +10,7 @@ namespace DatingApp.Extentions
         {
             return new UserDTO
             {
-                sId = user.sID,
+                sId = user.Id,
                 sDisplayName = user.sDisplayName,
                 sEmail = user.sEmail,
                 sImageUrl = user.sImageUrl,

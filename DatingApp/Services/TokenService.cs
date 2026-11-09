@@ -21,7 +21,7 @@ namespace DatingApp.Services
             {
                new(ClaimTypes.Email,user.sEmail),
                new(ClaimTypes.NameIdentifier,user.sDisplayName),
-               new("sId",user.sID)
+               new("sId",user.Id)
                //new(ClaimTypes.Email,user.sEmail),
                //new("customevalue","cutome also possible"),
             };
